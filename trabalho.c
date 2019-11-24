@@ -6,42 +6,41 @@ struct posicao{
     int l;
     int c;
 };
+//fila de posições
 struct filaP{
     struct posicao elem[50];
     int inicio;
     int fim;
     int tamMax;
 };
+//fila de inteiros
 struct filaI{
     int elem[50];
     int inicio;
     int fim;
     int tamMax;
 };
+//inicializa fila de posições
 void inicializaFilaP(struct filaP *q){
     q->inicio = -1;
     q->fim = -1;
 }
+//inicializa fila de inteiros
 void inicializaFilaI(struct filaI *q){
     q->inicio = -1;
     q->fim = -1;
 }
+//verifica se a fila de posiçoes ta vazia
 int filaVaziaP(struct filaP *q){
     return q->inicio == q->fim;
 
 }
+//verifica se a fila de inteiros ta vazia
 int filaVaziaI(struct filaI *q){
     return q->inicio == q->fim;
 
 }
-int filaCheiaP(struct filaP *q){
-    return (q->inicio == -1) && (q->fim == q->tamMax);
-
-}
-int filaCheiaI(struct filaI *q){
-    return (q->inicio == -1) && (q->fim == q->tamMax);
-
-}
+//desloca fila de posições
 void deslocaFilaP(struct filaP *q){
     int desloc = q->inicio + 1;
     for (int i = desloc; i < q->fim; i++){
@@ -50,6 +49,7 @@ void deslocaFilaP(struct filaP *q){
     q->inicio = -1;
     q->fim = q->fim-desloc;
 }
+//desloca fila de inteiros
 void deslocaFilaI(struct filaI *q){
     int desloc = q->inicio + 1;
     for (int i = desloc; i < q->fim; i++){
@@ -58,6 +58,7 @@ void deslocaFilaI(struct filaI *q){
     q->inicio = -1;
     q->fim = q->fim-desloc;
 }
+//insere na fila de posições
 void insereFilaP(struct filaP *q, struct posicao *x){
     if(!filaCheiaP(q)){
         if(q->fim == q->tamMax){
@@ -67,6 +68,7 @@ void insereFilaP(struct filaP *q, struct posicao *x){
         q->elem[q->fim] = *x;
     }
 }
+//insere na fila de inteiros
 void insereFilaI(struct filaI *q, int x){
     if(!filaCheiaI(q)){
         if(q->fim == q->tamMax){
@@ -76,6 +78,7 @@ void insereFilaI(struct filaI *q, int x){
         q->elem[q->fim] = x;
     }
 }
+//remove na fila de posições
 struct posicao removeFilaP(struct filaP *q){
     struct posicao x;
     if(!filaVaziaP(q)){
@@ -88,6 +91,7 @@ struct posicao removeFilaP(struct filaP *q){
     }
     return x;
 }
+//remove na fila de inteiros
 int removeFilaI(struct filaI *q){
     int x;
     if(!filaVaziaI(q)){
@@ -100,6 +104,7 @@ int removeFilaI(struct filaI *q){
     }
     return x;
 }
+//retorna o primeiro da fila de posiçoes
 struct posicao primeiroDaFilaP(struct filaP *q){
     if(!filaVaziaP(q)){
         return q->elem[q->inicio+1];
@@ -107,6 +112,7 @@ struct posicao primeiroDaFilaP(struct filaP *q){
         printf("erro");
     }
 }
+//retorna o primeiro da fila de inteiros
 int primeiroDaFilaI(struct filaI *q){
     if(!filaVaziaI(q)){
         return q->elem[q->inicio+1];
@@ -114,6 +120,7 @@ int primeiroDaFilaI(struct filaI *q){
         printf("erro");
     }
 }
+//funcao q realiza a busca e "limpa" o tabuleiro do jogo
 void busca(int m[12][19], int par, int l, int c){
     struct filaP a;
     struct filaP *q = &a;
@@ -172,7 +179,8 @@ void busca(int m[12][19], int par, int l, int c){
         removeFilaP(q);
     }
 }
-void realocaColunas(int m[12][19]){
+//função que realoca as linhas
+void realocaLinhas(int m[12][19]){
     struct filaI teste;
     struct filaI *a = &teste;
     int cont = 0;
@@ -200,7 +208,8 @@ void realocaColunas(int m[12][19]){
     }
     
 }
-void realocaLinhas(int m[12][19]){
+//função que realoca as colunas
+void realocaColunas(int m[12][19]){
     struct filaI teste;
     struct filaI *a = &teste;
     int cont = 0;
@@ -227,6 +236,7 @@ void realocaLinhas(int m[12][19]){
         
     }
 }
+//função que popula o tabuleiro do jogo de forma randomica
 void populaMatriz(int m[12][19]){
     for (int i = 0; i < 12; i++)
     {
@@ -247,6 +257,7 @@ void populaMatriz(int m[12][19]){
     }
     
 }
+//função que imprime a matriz
 void imprime(int m[12][19]){
     printf("\n");
     for(int i = 0; i < 12; i++){
@@ -258,6 +269,7 @@ void imprime(int m[12][19]){
     
     }
 }
+//funcao responsavel por realizar e gerencias as jogadas
 void jogada(int m[12][19]){
     int l;
     int c;
@@ -269,11 +281,12 @@ void jogada(int m[12][19]){
         printf("posição invalida, tente novamente");
     }else{
         busca(m,m[l][c],l,c);
-        realocaColunas(m);
         realocaLinhas(m);
+        realocaColunas(m);
     }
 
 }
+//função que percorre a matriz e ve se o jogo acabou
 int fimDeJogo(int m[12][19]){
     int a = 0;
     for (int i = 0; i <12; i++){
@@ -287,6 +300,7 @@ int fimDeJogo(int m[12][19]){
     }
     return a;
 }
+//função que determina se o jogador ganhou ou perdeu
 void vencedor(int m[12][19]){
     int a = 0;
     for (int i = 0; i <12; i++){
@@ -314,49 +328,6 @@ int main(){
     imprime(m);
     vencedor(m);
 
-    
-    /*imprime(m);
-    busca(m,m[2][2],2,2);
-    imprime(m);
-    realocaColunas(m);
-    imprime(m);
-    for(int i = 0; i < 12; i++){
-        for(int j = 0; j < 19; j++){
-            scanf("%d", &m[i][j]);
-    }
-    }
-    for(int i = 0; i < 12; i++){
-        for(int j = 0; j < 19; j++){
-            printf("%d", m[i][j]);
-        }
-    printf("\n");
-    }
-    busca(m,1,1,1);
-    printf("\n");
-    for(int i = 0; i < 12; i++){
-        for(int j = 0; j < 19; j++){
-            printf("%d", m[i][j]);
-        }
-    printf("\n");
-    }
-    printf("\n");
-    printf("\n");
-    realocaColunas(m);
-    for(int i = 0; i < 12; i++){
-        for(int j = 0; j < 19; j++){
-            printf("%d", m[i][j]);
-        }
-    printf("\n");
-    }
-    printf("\n");
-    printf("\n");
-    realocaLinhas(m);
-    for(int i = 0; i < 12; i++){
-        for(int j = 0; j < 19; j++){
-            printf("%d", m[i][j]);
-        }
-    printf("\n");
-    }*/
     return 0;
 
 }
