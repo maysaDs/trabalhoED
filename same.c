@@ -127,10 +127,9 @@ int primeiroDaFilaI(struct filaI *q){
     }
 }
 //funcao q realiza a busca e "limpa" o tabuleiro do jogo
-int busca(int m[12][16], int par, int l, int c){
+void busca(int m[12][16], int par, int l, int c){
     struct filaP a;
     struct filaP *q = &a;
-    int cont = 0;
     q->tamMax = 12*16;
     inicializaFilaP(q);
     struct posicao ci;
@@ -149,13 +148,13 @@ int busca(int m[12][16], int par, int l, int c){
     while (!filaVaziaP(q)){
         *b = primeiroDaFilaP(q);
         if(m[b->l][b->c]==par||m[b->l][b->c]==0){
+            m[b->l][b->c] = 0;
             if(b->l + 1 < 12){
                 cima->l = b->l + 1;
                 cima->c = b->c;
                 if (m[cima->l][cima->c]==par){
                     m[cima->l][cima->c] = 0;
                     insereFilaP(q, cima);
-                    cont++;
                 } 
             }
             if(b->l - 1 >=0){
@@ -164,7 +163,6 @@ int busca(int m[12][16], int par, int l, int c){
                 if (m[baixo->l][baixo->c]==par){
                     m[baixo->l][baixo->c] = 0;
                     insereFilaP(q, baixo);
-                    cont++;
                 } 
             }
             if(b->c + 1 < 16){
@@ -173,7 +171,6 @@ int busca(int m[12][16], int par, int l, int c){
                 if (m[dir->l][dir->c]==par){
                     m[dir->l][dir->c] = 0;
                     insereFilaP(q, dir);
-                    cont++;
                 } 
             }
             if(b->c - 1 >=0){
@@ -182,16 +179,11 @@ int busca(int m[12][16], int par, int l, int c){
                 if (m[esq->l][esq->c]==par){
                     m[esq->l][esq->c] = 0;
                     insereFilaP(q, esq);
-                    cont++;
                 } 
             }
         }
-        if(q->fim>1){
-            m[b->l][b->c] = 0;
-        }
         removeFilaP(q);
     }
-    return cont;
 }
 //função que realoca as linhas
 void realocaLinhas(int m[12][16]){
@@ -312,7 +304,7 @@ void imprime(int m[12][16]){
 	}
 }
 //funcao responsavel por realizar e gerencias as jogadas
-void jogada(int m[12][16],int *s){
+void jogada(int m[12][16]){
     int l;
     int c;
     imprime(m);
@@ -320,9 +312,9 @@ void jogada(int m[12][16],int *s){
     scanf("%d", &l);
     scanf("%d", &c);
     if(l>11 || c > 15){
-        printf("posição invalida, tente novamente\n");
+        printf("posição invalida, tente novamente");
     }else{
-        *s = busca(m,m[l][c],l,c);
+        busca(m,m[l][c],l,c);
         realocaLinhas(m);
         realocaColunas(m);
     }
@@ -353,29 +345,22 @@ void vencedor(int m[12][16]){
         }
     }
     if (a == 1){
-        printf("voce perdeu\n");
+        printf("voce perdeu");
     }else{
-        printf("voce Ganhou\n");
+        printf("voce perdeu");
     }
     
 }
 int main(){
     int m[12][16];
-    int score = 0;
-    int a;
-    int *s = &a;
-    *s = 0;
-    
     populaMatriz(m);
     while(fimDeJogo(m))
     {
-       jogada(m, s);
-       score += (*s-2)*(*s-2);
+       jogada(m);
     }
-    printf("FIM DE JOGO\n");
+    printf("FIM DE JOGO");
     imprime(m);
     vencedor(m);
-    printf("seu score é: %i \n", score);
 
     return 0;
 
