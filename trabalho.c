@@ -128,21 +128,15 @@ int primeiroDaFilaI(struct filaI *q){
 }
 //funcao q realiza a busca e "limpa" o tabuleiro do jogo
 int busca(int m[12][16], int par, int l, int c){
-    struct filaP a;
-    struct filaP *q = &a;
+    struct filaP *q = malloc(sizeof(struct filaP));
     int cont = 0;
     q->tamMax = 12*16;
     inicializaFilaP(q);
-    struct posicao ci;
-    struct posicao ba;
-    struct posicao di;
-    struct posicao es;
-    struct posicao pri;
-    struct posicao *b = &pri;
-    struct posicao *cima = &ci;
-    struct posicao *baixo = &ba;
-    struct posicao *esq = &es;
-    struct posicao *dir = &di;
+    struct posicao *b = malloc(sizeof(struct posicao));
+    struct posicao *cima = malloc(sizeof(struct posicao));
+    struct posicao *baixo =malloc(sizeof(struct posicao));
+    struct posicao *esq =malloc(sizeof(struct posicao));
+    struct posicao *dir = malloc(sizeof(struct posicao));
     b->l = l;
     b->c = c;
     insereFilaP(q,b);
@@ -195,8 +189,7 @@ int busca(int m[12][16], int par, int l, int c){
 }
 //função que realoca as linhas
 void realocaLinhas(int m[12][16]){
-    struct filaI teste;
-    struct filaI *a = &teste;
+    struct filaI *a =malloc(sizeof(struct posicao));
     int cont = 0;
     a->tamMax = 20;
     inicializaFilaI(a);
@@ -224,8 +217,7 @@ void realocaLinhas(int m[12][16]){
 }
 //função que realoca as colunas
 void realocaColunas(int m[12][16]){
-    struct filaI teste;
-    struct filaI *a = &teste;
+    struct filaI *a =malloc(sizeof(struct filaI));
     int cont = 0;
     int aux = 0;
     a->tamMax = 12;
@@ -362,8 +354,7 @@ void vencedor(int m[12][16]){
 int main(){
     int m[12][16];
     int score = 0;
-    int a;
-    int *s = &a;
+    int *s = malloc(sizeof(int));
     *s = 0;
     
     populaMatriz(m);
